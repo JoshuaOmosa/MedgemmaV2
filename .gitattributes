@@ -1,0 +1,5 @@
+# Force LF everywhere so `ruff format --check` behaves the same on Windows, macOS and CI.
+* text=auto eol=lf
+*.sh text eol=lf
+*.wav binary
+*.gguf binary
