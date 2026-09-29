@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Download faster-whisper weights on a CONNECTED staging machine, then copy ./models across.
 
-    pip install huggingface_hub
-    python scripts/fetch_whisper.py --size small --dest models
+pip install huggingface_hub
+python scripts/fetch_whisper.py --size small --dest models
 """
 
 import argparse
