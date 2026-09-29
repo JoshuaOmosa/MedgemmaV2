@@ -1,0 +1,5 @@
+Doctor: What brings you in today?
+Patient: I've had a cough for about three days. No fever that I've noticed.
+Doctor: Any shortness of breath or chest pain?
+Patient: No. My number is 555-123-4567 if you need to call about results.
+Doctor: Sounds like a viral upper respiratory infection. Rest, fluids, and come back if it gets worse.

@@ -1,0 +1,23 @@
+# Import a locally downloaded MedGemma GGUF into Ollama (run on a connected staging machine).
+# 1. Accept the model terms and download the weights yourself (they are gated).
+# 2. Put the .gguf next to this file, fix the FROM line, then:
+#      OLLAMA_MODELS=./models/ollama ollama create medgemma -f models/Modelfile.medgemma
+# The TEMPLATE below follows the Gemma chat format; verify it against the current Ollama
+# gemma3 template for your Ollama version.
+FROM ./medgemma-4b-it-Q4_K_M.gguf
+
+PARAMETER temperature 0
+PARAMETER num_ctx 8192
+PARAMETER stop "<end_of_turn>"
+
+TEMPLATE """{{- range $i, $_ := .Messages }}
+{{- $last := eq (len (slice $.Messages $i)) 1 }}
+{{- if or (eq .Role "user") (eq .Role "system") }}<start_of_turn>user
+{{ .Content }}<end_of_turn>
+{{ if $last }}<start_of_turn>model
+{{ end }}
+{{- else if eq .Role "assistant" }}<start_of_turn>model
+{{ .Content }}{{ if not $last }}<end_of_turn>
+{{ end }}
+{{- end }}
+{{- end }}"""

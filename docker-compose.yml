@@ -1,0 +1,44 @@
+name: medgemma-aegis
+
+services:
+  aegis:
+    build: .
+    image: medgemma-aegis:local
+    restart: unless-stopped
+
+    # --- Isolation ---
+    network_mode: none            # no NICs except loopback: no egress, no ingress
+    read_only: true               # immutable root filesystem
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+
+    # --- Resource limits (cgroups). Tune to your hardware; see README sizing table. ---
+    mem_limit: ${AEGIS_MEM_LIMIT:-12g}
+    memswap_limit: ${AEGIS_MEM_LIMIT:-12g}   # equal to mem_limit => no swap (PHI not paged to disk)
+    cpus: ${AEGIS_CPUS:-6}
+    pids_limit: 256
+
+    environment:
+      AEGIS_LLM_MODEL: ${AEGIS_LLM_MODEL:-medgemma}
+      AEGIS_WHISPER_MODEL_PATH: /models/whisper-small
+      AEGIS_INJECTION_POLICY: ${AEGIS_INJECTION_POLICY:-quarantine}
+      AEGIS_REQUIRE_AIRGAP: "true"
+
+    volumes:
+      - ./data/inbox:/data/inbox:ro     # audio in (read-only)
+      - ./data/outbox:/data/outbox      # SOAP JSON out (only writable data mount)
+      - ./models:/models:ro             # pre-fetched Whisper + Ollama weights (read-only)
+
+    tmpfs:
+      # `exec` is needed because Ollama launches its inference runner from a temp dir.
+      - /tmp:exec,mode=1777,size=1g
+      - /home/aegis:uid=10001,gid=10001,mode=0700,size=64m
+
+    healthcheck:
+      test: ["CMD", "aegis", "selfcheck"]
+      interval: 60s
+      timeout: 15s
+      start_period: 120s
+      retries: 3

@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+build/
+dist/
+
+# --- Never commit PHI or model weights ---
+data/inbox/*
+data/outbox/*
+!data/inbox/.gitkeep
+!data/outbox/.gitkeep
+models/*
+!models/Modelfile.medgemma
+*.wav
+*.gguf
+*.safetensors
+.env

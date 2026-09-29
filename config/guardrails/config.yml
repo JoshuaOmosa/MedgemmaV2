@@ -1,0 +1,14 @@
+# EXPERIMENTAL: optional NeMo Guardrails input rail (AEGIS_USE_NEMO=true).
+# Point `models` at your local Ollama model; adjust the engine/params for your nemoguardrails
+# version. The rail must never reach a remote endpoint.
+models:
+  - type: main
+    engine: ollama
+    model: medgemma
+    parameters:
+      base_url: http://127.0.0.1:11434
+
+rails:
+  input:
+    flows:
+      - self check input
