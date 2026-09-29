@@ -173,6 +173,6 @@ tests/            25 offline unit tests
 
 ## Licensing notes
 
-Code: MIT (replace `<YOUR NAME>` in `LICENSE`). **Model weights are not covered by this licence:**
+Code: MIT | **Model weights are not covered by this licence:**
 MedGemma is distributed under Google's Health AI Developer Foundations terms; Whisper weights
 are MIT. Review each model's terms before use.
